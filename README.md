@@ -1,0 +1,25 @@
+# Desmos-Art-Generator 😍
+
+Play it here: [Desmos Art Generator]😁
+
+Original: [replit.com/@ArchimedesLi/Desmos-Art-Generator]🙏
+
+Made by Archimedes Li, Julia Huang, Mahika Patil, Lino Le Van🙏
+
+Something similar: [JinayJain/pic2graph]
+
+## About This Repositories
+
+I saw this on replit.com. I just like it!!!🔥
+
+I made this repositories because I can keep the knowledge about [convolution.js] and [vectorize.js] in folder [image_processing]
+
+One day, I turn a picture from one of my friend into roughly 35000+ equations.💀 I have to plot it so many times because the website will crash if I put all the 35000+ equations simultaneously.😭 So I decided to put 5000 equations 8 times instead to make it works. My computer was crying lol.🤣 It was so laggy and it crashed so many times. Good thing is after I plot all the equations I capture my screen and send it to one of my friend. She was so satisfy,💖 she likes it a lot even though the quality of the picture is very low. Um... Thanks for the code [Archimedes Li]. Thanks for being in a part of our memories.
+
+[Desmos Art Generator]: https://desmos-art-generator.archimedesli.repl.co/
+[replit.com/@ArchimedesLi/Desmos-Art-Generator]: https://replit.com/@ArchimedesLi/Desmos-Art-Generator#index.js
+[JinayJain/pic2graph]: https://github.com/JinayJain/pic2graph
+[convolution.js]: github.com/LapisBerry/Desmos-Art-Generator/blob/master/image_processing/convolution.js?plain=1
+[vectorize.js]: github.com/LapisBerry/Desmos-Art-Generator/blob/master/image_processing/vectorize.js?plain=1
+[image_processing]: github.com/LapisBerry/Desmos-Art-Generator/blob/master/image_processing/
+[Archimedes Li]: https://replit.com/@ArchimedesLi
