@@ -10,7 +10,7 @@ Something similar: [JinayJain/pic2graph]
 
 ## About This Repositories
 
-I saw this on replit.com. I just like it!!!🔥
+I saw this on replit.com when I was like 14 years old. I just like it!!!🔥
 
 I made this repositories because I can keep the knowledge about [convolution.js] and [vectorize.js] in folder [image_processing]
 
