@@ -19,7 +19,7 @@ One day, I turn a picture from one of my friend into roughly 35000+ equations.ðŸ
 [Desmos Art Generator]: https://desmos-art-generator.archimedesli.repl.co/
 [replit.com/@ArchimedesLi/Desmos-Art-Generator]: https://replit.com/@ArchimedesLi/Desmos-Art-Generator#index.js
 [JinayJain/pic2graph]: https://github.com/JinayJain/pic2graph
-[convolution.js]: github.com/LapisBerry/Desmos-Art-Generator/blob/master/image_processing/convolution.js?plain=1
-[vectorize.js]: github.com/LapisBerry/Desmos-Art-Generator/blob/master/image_processing/vectorize.js?plain=1
-[image_processing]: github.com/LapisBerry/Desmos-Art-Generator/blob/main/image_processing/
+[convolution.js]: /image_processing/convolution.js?plain=1
+[vectorize.js]: /image_processing/vectorize.js?plain=1
+[image_processing]: /image_processing/
 [Archimedes Li]: https://replit.com/@ArchimedesLi
