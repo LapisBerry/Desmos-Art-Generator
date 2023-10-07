@@ -21,5 +21,5 @@ One day, I turn a picture from one of my friend into roughly 35000+ equations.ðŸ
 [JinayJain/pic2graph]: https://github.com/JinayJain/pic2graph
 [convolution.js]: github.com/LapisBerry/Desmos-Art-Generator/blob/master/image_processing/convolution.js?plain=1
 [vectorize.js]: github.com/LapisBerry/Desmos-Art-Generator/blob/master/image_processing/vectorize.js?plain=1
-[image_processing]: github.com/LapisBerry/Desmos-Art-Generator/blob/master/image_processing/
+[image_processing]: github.com/LapisBerry/Desmos-Art-Generator/blob/main/image_processing/
 [Archimedes Li]: https://replit.com/@ArchimedesLi
