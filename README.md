@@ -8,6 +8,8 @@ Made by Archimedes Li, Julia Huang, Mahika Patil, Lino Le Van🙏
 
 Something similar: [JinayJain/pic2graph]
 
+EDITED: The original link probably was taken down by now.
+
 ## About This Repositories
 
 I saw this on replit.com when I was like 14 years old. I just like it!!!🔥 (btw, that one I found wasn't from Archimedes Li 😉 and I couldn't tell if I forgot some informations.)
