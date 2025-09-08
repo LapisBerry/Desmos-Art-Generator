@@ -8,7 +8,7 @@ Made by Archimedes Li, Julia Huang, Mahika Patil, Lino Le Van🙏
 
 Something similar: [JinayJain/pic2graph]
 
-EDITED: The original link probably was taken down by now.
+EDITED: The original link probably was taken down by now. You can try the [JinayJain/pic2graph] though.
 
 ## About This Repositories
 
