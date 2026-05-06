@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desmos Art Generator</title>
+  <style>
+    body { font-family: monospace; max-width: 820px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { margin-bottom: 1rem; }
+    label { display: flex; align-items: center; gap: 0.75rem; margin: 0.4rem 0; }
+    label span:first-child { width: 180px; flex-shrink: 0; }
+    input[type=range] { width: 260px; }
+    .val { width: 50px; text-align: right; }
+    fieldset { margin: 1rem 0; border: 1px solid #ccc; padding: 0.75rem 1rem; }
+    legend { font-weight: bold; }
+    #controls { display: flex; gap: 0.5rem; margin: 0.75rem 0; }
+    button { padding: 0.4rem 1rem; cursor: pointer; }
+    button:disabled { opacity: 0.4; cursor: default; }
+    #status { color: #c00; min-height: 1.2em; }
+    #warning { color: #b60; font-weight: bold; min-height: 1.2em; }
+    #count { min-height: 1.2em; }
+    textarea { width: 100%; height: 320px; font-family: monospace; font-size: 0.8rem; box-sizing: border-box; }
+    #copyBtn { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Desmos Art Generator</h1>
+
+  <label>
+    <span>Image</span>
+    <input type="file" id="imageInput" accept="image/png,image/jpeg,image/webp">
+  </label>
+
+  <fieldset>
+    <legend>Parameters</legend>
+
+    <label>
+      <span>Sigma (blur)</span>
+      <input type="range" id="sigma" min="0.1" max="10" step="0.1" value="2">
+      <span class="val" id="sigmaVal">2.0</span>
+    </label>
+
+    <label>
+      <span>Low threshold</span>
+      <input type="range" id="lowThreshold" min="0" max="255" step="1" value="5">
+      <span class="val" id="lowThresholdVal">5</span>
+    </label>
+
+    <label>
+      <span>High threshold</span>
+      <input type="range" id="highThreshold" min="0" max="255" step="1" value="15">
+      <span class="val" id="highThresholdVal">15</span>
+    </label>
+
+    <label>
+      <span>Filter speckle</span>
+      <input type="range" id="filterSpeckle" min="0" max="100" step="1" value="4">
+      <span class="val" id="filterSpeckleVal">4</span>
+    </label>
+
+    <label>
+      <span>Corner threshold</span>
+      <input type="range" id="cornerThreshold" min="0" max="180" step="1" value="60">
+      <span class="val" id="cornerThresholdVal">60</span>
+    </label>
+
+    <label>
+      <span>Path precision</span>
+      <input type="range" id="pathPrecision" min="1" max="10" step="1" value="6">
+      <span class="val" id="pathPrecisionVal">6</span>
+    </label>
+  </fieldset>
+
+  <div id="controls">
+    <button id="processBtn" disabled>Generate Equations</button>
+    <button id="copyBtn">Copy All</button>
+  </div>
+
+  <p id="status"></p>
+  <p id="warning"></p>
+  <p id="count"></p>
+
+  <textarea id="output" readonly placeholder="Equations will appear here…"></textarea>
+
+  <script type="module">
+    import init, { process_image } from './pkg/desmos_art_generator.js';
+
+    const $ = id => document.getElementById(id);
+
+    const params = [
+      ['sigma',           'sigmaVal'],
+      ['lowThreshold',    'lowThresholdVal'],
+      ['highThreshold',   'highThresholdVal'],
+      ['filterSpeckle',   'filterSpeckleVal'],
+      ['cornerThreshold', 'cornerThresholdVal'],
+      ['pathPrecision',   'pathPrecisionVal'],
+    ];
+
+    for (const [id, valId] of params) {
+      $(id).addEventListener('input', () => $(valId).textContent = $(id).value);
+    }
+
+    $('imageInput').addEventListener('change', () => {
+      $('processBtn').disabled = !$('imageInput').files.length;
+    });
+
+    await init();
+
+    $('processBtn').addEventListener('click', async () => {
+      $('status').textContent = 'Processing…';
+      $('warning').textContent = '';
+      $('count').textContent = '';
+      $('output').value = '';
+      $('copyBtn').style.display = 'none';
+      $('processBtn').disabled = true;
+
+      try {
+        const file = $('imageInput').files[0];
+        const bytes = new Uint8Array(await file.arrayBuffer());
+
+        const result = process_image(
+          bytes,
+          parseFloat($('sigma').value),
+          parseFloat($('lowThreshold').value),
+          parseFloat($('highThreshold').value),
+          parseInt($('filterSpeckle').value),
+          parseInt($('cornerThreshold').value),
+          parseInt($('pathPrecision').value),
+        );
+
+        const equations = JSON.parse(result);
+
+        $('status').textContent = '';
+        $('count').textContent = `${equations.length} equations`;
+
+        if (equations.length > 1000) {
+          $('warning').textContent =
+            'Over 1000 equations — your browser may struggle to render this in Desmos.';
+        }
+
+        $('output').value = equations.join('\n');
+        $('copyBtn').style.display = 'inline';
+      } catch (err) {
+        $('status').textContent = `Error: ${err}`;
+      } finally {
+        $('processBtn').disabled = false;
+      }
+    });
+
+    $('copyBtn').addEventListener('click', () => {
+      navigator.clipboard.writeText($('output').value);
+    });
+  </script>
+</body>
+</html>
