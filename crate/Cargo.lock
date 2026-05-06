@@ -342,6 +342,7 @@ dependencies = [
  "roxmltree",
  "serde_json",
  "svgtypes",
+ "visioncortex",
  "vtracer",
  "wasm-bindgen",
 ]

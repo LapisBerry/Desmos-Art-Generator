@@ -2,7 +2,8 @@ use image::GrayImage;
 use imageproc::edges::canny;
 use imageproc::filter::gaussian_blur_f32;
 use svgtypes::{PathParser, PathSegment};
-use vtracer::{ColorImage, ColorMode, Config, Hierarchical, PathSimplifyMode};
+use visioncortex::PathSimplifyMode;
+use vtracer::{ColorImage, ColorMode, Config, Hierarchical};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(start)]
