@@ -1,8 +1,8 @@
-use image::{DynamicImage, GrayImage};
+use image::GrayImage;
 use imageproc::edges::canny;
 use imageproc::filter::gaussian_blur_f32;
 use svgtypes::{PathParser, PathSegment};
-use vtracer::{ColorMode, Config, Hierarchical};
+use vtracer::{ColorImage, ColorMode, Config, Hierarchical, PathSimplifyMode};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(start)]
@@ -26,9 +26,19 @@ pub fn process_image(
     let blurred: GrayImage = gaussian_blur_f32(&gray, sigma);
     let edges: GrayImage = canny(&blurred, low_threshold, high_threshold);
 
+    // Convert grayscale edges to RGBA ColorImage; invert so edges (white) become dark for tracing
+    let width = edges.width() as usize;
+    let height = edges.height() as usize;
+    let pixels: Vec<u8> = edges
+        .pixels()
+        .flat_map(|p| { let v = 255 - p[0]; [v, v, v, 255u8] })
+        .collect();
+    let color_img = ColorImage { pixels, width, height };
+
     let config = Config {
         color_mode: ColorMode::Binary,
         hierarchical: Hierarchical::Stacked,
+        mode: PathSimplifyMode::Spline,
         filter_speckle,
         color_precision: 6,
         layer_difference: 16,
@@ -39,8 +49,9 @@ pub fn process_image(
         path_precision: Some(path_precision),
     };
 
-    let svg = vtracer::convert_image_to_svg(DynamicImage::ImageLuma8(edges), &config)
+    let svg_file = vtracer::convert(color_img, config)
         .map_err(|e| JsError::new(&e))?;
+    let svg = svg_file.to_string();
 
     let equations = svg_to_desmos(&svg)?;
 
