@@ -59,6 +59,27 @@ pub fn process_image(
     serde_json::to_string(&equations).map_err(|e| JsError::new(&e.to_string()))
 }
 
+#[wasm_bindgen]
+pub fn get_edge_png(
+    bytes: &[u8],
+    sigma: f32,
+    low_threshold: f32,
+    high_threshold: f32,
+) -> Result<Vec<u8>, JsError> {
+    let img = image::load_from_memory(bytes).map_err(|e| JsError::new(&e.to_string()))?;
+    let gray: GrayImage = img.to_luma8();
+    let blurred = gaussian_blur_f32(&gray, sigma);
+    let edges = canny(&blurred, low_threshold, high_threshold);
+    let mut buf = Vec::new();
+    image::DynamicImage::from(edges)
+        .write_to(
+            &mut std::io::Cursor::new(&mut buf),
+            image::ImageFormat::Png,
+        )
+        .map_err(|e| JsError::new(&e.to_string()))?;
+    Ok(buf)
+}
+
 fn svg_to_desmos(svg: &str) -> Result<Vec<String>, JsError> {
     let doc =
         roxmltree::Document::parse(svg).map_err(|e| JsError::new(&e.to_string()))?;

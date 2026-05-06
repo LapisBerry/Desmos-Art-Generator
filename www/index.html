@@ -21,6 +21,9 @@
     #count { min-height: 1.2em; }
     textarea { width: 100%; height: 320px; font-family: monospace; font-size: 0.8rem; box-sizing: border-box; }
     #copyBtn { display: none; }
+    #edgePreviewWrap { display: none; margin-top: 1.25rem; }
+    #edgePreviewWrap p { margin: 0 0 0.4rem; font-weight: bold; font-size: 0.85rem; }
+    #edgePreview { max-width: 100%; border: 1px solid #ccc; image-rendering: pixelated; }
   </style>
 </head>
 <body>
@@ -82,8 +85,13 @@
 
   <textarea id="output" readonly placeholder="Equations will appear here…"></textarea>
 
+  <div id="edgePreviewWrap">
+    <p>Canny edge detection preview</p>
+    <img id="edgePreview" alt="Edge detection result">
+  </div>
+
   <script type="module">
-    import init, { process_image } from './pkg/desmos_art_generator.js';
+    import init, { process_image, get_edge_png } from './pkg/desmos_art_generator.js';
 
     const $ = id => document.getElementById(id);
 
@@ -140,6 +148,19 @@
 
         $('output').value = equations.join('\n');
         $('copyBtn').style.display = 'inline';
+
+        // Render edge preview
+        const pngBytes = get_edge_png(
+          bytes,
+          parseFloat($('sigma').value),
+          parseFloat($('lowThreshold').value),
+          parseFloat($('highThreshold').value),
+        );
+        const prevUrl = URL.createObjectURL(new Blob([pngBytes], { type: 'image/png' }));
+        if ($('edgePreview').dataset.blobUrl) URL.revokeObjectURL($('edgePreview').dataset.blobUrl);
+        $('edgePreview').src = prevUrl;
+        $('edgePreview').dataset.blobUrl = prevUrl;
+        $('edgePreviewWrap').style.display = 'block';
       } catch (err) {
         $('status').textContent = `Error: ${err}`;
       } finally {
