@@ -66,6 +66,54 @@ pub fn process_image(
 }
 
 #[wasm_bindgen]
+pub fn get_debug_svg(
+    bytes: &[u8],
+    sigma: f32,
+    low_threshold: f32,
+    high_threshold: f32,
+    filter_speckle: usize,
+    corner_threshold: i32,
+    path_precision: u32,
+) -> Result<String, JsError> {
+    let img = image::load_from_memory(bytes).map_err(|e| JsError::new(&e.to_string()))?;
+    let gray: GrayImage = img.to_luma8();
+    let blurred: GrayImage = gaussian_blur_f32(&gray, sigma);
+    let edges: GrayImage = canny(&blurred, low_threshold, high_threshold);
+
+    let width = edges.width() as usize;
+    let height = edges.height() as usize;
+    let pixels: Vec<u8> = edges
+        .pixels()
+        .flat_map(|p| {
+            let v = 255 - p[0];
+            [v, v, v, 255u8]
+        })
+        .collect();
+    let color_img = ColorImage {
+        pixels,
+        width,
+        height,
+    };
+
+    let config = Config {
+        color_mode: ColorMode::Binary,
+        hierarchical: Hierarchical::Cutout,
+        mode: PathSimplifyMode::Spline,
+        filter_speckle,
+        color_precision: 6,
+        layer_difference: 16,
+        corner_threshold,
+        length_threshold: 4.0,
+        max_iterations: 10,
+        splice_threshold: 45,
+        path_precision: Some(path_precision),
+    };
+
+    let svg_file = vtracer::convert(color_img, config).map_err(|e| JsError::new(&e))?;
+    Ok(svg_file.to_string())
+}
+
+#[wasm_bindgen]
 pub fn get_edge_png(
     bytes: &[u8],
     sigma: f32,
