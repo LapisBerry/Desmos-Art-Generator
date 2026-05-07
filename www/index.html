@@ -91,7 +91,7 @@
   </div>
 
   <script type="module">
-    import init, { process_image, get_edge_png, get_debug_svg } from './pkg/desmos_art_generator.js';
+    import init, { process_image, get_edge_png } from './pkg/desmos_art_generator.js';
 
     const $ = id => document.getElementById(id);
 
@@ -135,21 +135,6 @@
           parseInt($('cornerThreshold').value),
           parseInt($('pathPrecision').value),
         );
-
-        // DEBUG: log the raw vtracer SVG to inspect what commands it actually emits
-        const debugSvg = get_debug_svg(
-          bytes,
-          parseFloat($('sigma').value),
-          parseFloat($('lowThreshold').value),
-          parseFloat($('highThreshold').value),
-          parseInt($('filterSpeckle').value),
-          parseInt($('cornerThreshold').value),
-          parseInt($('pathPrecision').value),
-        );
-        console.log('vtracer SVG (first 2000 chars):', debugSvg.slice(0, 2000));
-        const ctags = (debugSvg.match(/[CcSsQqTt]/g) || []).length;
-        const ltags = (debugSvg.match(/[LlHhVv]/g) || []).length;
-        console.log(`SVG curve commands: ${ctags}, line commands: ${ltags}`);
 
         const equations = JSON.parse(result);
 
